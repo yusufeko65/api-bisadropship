@@ -80,6 +80,10 @@ class Moota extends CI_Controller {
 
     public function webhook_notif(){
         $notifications = json_decode( file_get_contents("php://input") );
+        if(empty($notifications)){
+            return '';
+        }
+
         if(!is_array($notifications)) {
             $notifications = json_decode( $notifications );
         }
