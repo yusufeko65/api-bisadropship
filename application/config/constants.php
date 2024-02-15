@@ -86,3 +86,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 // Custom define by Yusuf Eko
 define('SECRET_KEY_MOOTA','UvqQ2HJ2SIwVGvhH9rAaGFx78Y1FMxLAygb55BiO72JEUamA0s');
+define('HOSTNAME','http://' . $_SERVER['SERVER_NAME'] . '/api-bisadropship');

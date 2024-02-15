@@ -34,8 +34,8 @@ class Moota extends CI_Controller {
             $this->curl->http_header($key,$val);
         }
 
-        $data = $this->curl->simple_get($url);
-        return $data;
+        $result = $this->curl->simple_get($url);
+        return $result;
     }
 
     public function profile(){
@@ -79,7 +79,19 @@ class Moota extends CI_Controller {
     }
 
     public function webhook_notif(){
-        $notifications = json_decode( file_get_contents("php://input") );
+        header("Content-Type:application/json");
+
+         //cek user password 
+        if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) { 
+
+            header('HTTP/1.1 401 Unauthorized'); 
+            header('WWW-Authenticate: Basic realm="My Realm"'); 
+            echo '{"error":"No access"}';
+            exit(); 
+        }
+        
+        $notifications = json_decode( file_get_contents("php://input"), true );
+
         if(empty($notifications)){
             return '';
         }
@@ -90,7 +102,9 @@ class Moota extends CI_Controller {
         
         if( count($notifications) > 0 ) {
             foreach( $notifications as $notification) {
-                // Your code here
+                foreach($notification as $key => $value){
+                    echo $key . " :: " . $value . "<br>";
+                }
             }
         }
     }
