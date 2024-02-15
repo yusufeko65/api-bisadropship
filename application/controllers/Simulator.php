@@ -21,7 +21,7 @@ class Simulator extends CI_Controller {
 
         $header = [
             'Content-Type'  => 'application/json',
-            'Authorization' => 'Basic ' . base64_encode('testing:')
+            'Authorization' => 'Basic ' . base64_encode('testing:tst203')
         ];
 
         foreach($header as $key => $val){
