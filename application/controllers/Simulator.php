@@ -40,7 +40,7 @@ class Simulator extends CI_Controller {
             return $code . ' :: ' . $error;
         }
 
-        return $result;
+        return 'Transfer Sukses';
     }
 
     public function json_format($nominal){

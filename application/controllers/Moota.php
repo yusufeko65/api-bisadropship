@@ -101,10 +101,11 @@ class Moota extends CI_Controller {
         }
         
         if( count($notifications) > 0 ) {
+            $this->load->model('pembayaran');
+
             foreach( $notifications as $notification) {
-                foreach($notification as $key => $value){
-                    echo $key . " :: " . $value . "<br>";
-                }
+                $check = $this->pembayaran->check($notification);
+                if($check) break; 
             }
         }
     }
