@@ -82,13 +82,13 @@ class Moota extends CI_Controller {
         header("Content-Type:application/json");
 
          //cek user password 
-        if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) { 
+        // if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) { 
 
-            header('HTTP/1.1 401 Unauthorized'); 
-            header('WWW-Authenticate: Basic realm="My Realm"'); 
-            echo '{"error":"No access"}';
-            exit(); 
-        }
+        //     header('HTTP/1.1 401 Unauthorized'); 
+        //     header('WWW-Authenticate: Basic realm="My Realm"'); 
+        //     echo '{"error":"No access"}';
+        //     exit(); 
+        // }
         
         $notifications = json_decode( file_get_contents("php://input"), true );
 
