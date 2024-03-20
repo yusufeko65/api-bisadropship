@@ -57,7 +57,7 @@ class Pembayaran extends CI_Model
                 'bank_dari'         => 0,
                 'bank_rek_dari'     => 0,
                 'bank_atasnama_dari'=> '-',
-                'tgl_transfer'      => $notif['date'],
+                'tgl_transfer'      => $notif['created_at'],
                 'status_bayar'      => 12,
                 'tgl_input'         => date('Y-m-d'),
                 'ip_data'           => '::1',
