@@ -41,7 +41,7 @@ class Moota extends CI_Controller {
         }
 
         $result = $this->curl->simple_get($url);
-        return $result;
+        return json_decode($result,true);
     }
 
     public function profile($token){
@@ -87,7 +87,7 @@ class Moota extends CI_Controller {
     public function check_payment($token){
         $banks = $this->bank($token);
 
-        foreach($banks as $key => $val){
+        foreach($banks['data'] as $key => $val){
             $bank_id = $val['bank_id'];
             
             $mutations = $this->mutation_last($token,$bank_id);
