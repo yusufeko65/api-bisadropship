@@ -11,7 +11,7 @@ class Moota extends CI_Controller {
 
     public $parameter = '';
 
-    public $token = 'c3VzYW50MCNiNHNtYWxsYWhAMjgwMzE5OTU=';
+    public $token = 'c3VzYW50MCNiNHNtYWxsYWhAMjgwMzE5OTU';
 
     public function __construct(){
         parent::__construct();
