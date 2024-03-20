@@ -46,42 +46,42 @@ class Moota extends CI_Controller {
 
     public function profile($token){
         $this->parameter = 'profile';
-        $this->get_curl($token);
+        return $this->get_curl($token);
     }
 
     public function balance($token){
         $this->parameter = 'balance';
-        $this->get_curl($token);
+        return $this->get_curl($token);
     }
 
     public function bank($token){
         $this->parameter = 'bank';
-        $this->get_curl($token);
+        return $this->get_curl($token);
     }
 
     public function bank_detail($token,$id=0){
         $this->parameter = 'bank/' . $id;
-        $this->get_curl($token);
+        return $this->get_curl($token);
     }
 
     public function mutation($token,$id=0){
         $this->parameter = 'bank/' . $id . '/mutation';
-        $this->get_curl($token);
+        return $this->get_curl($token);
     }
 
     public function mutation_last($token,$id=0,$data=10){
         $this->parameter = 'bank/' . $id . '/mutation/recent/' . $data;
-        $this->get_curl($token);
+        return $this->get_curl($token);
     }
 
     public function mutation_search_amount($token,$id=0,$amount=10){
         $this->parameter = 'bank/' . $id . '/mutation/search/' . $amount;
-        $this->get_curl($token);
+        return $this->get_curl($token);
     }
 
     public function mutation_search_description($token,$id=0,$description=10){
         $this->parameter = 'bank/' . $id . '/mutation/search/description/' . $description;
-        $this->get_curl($token);
+        return $this->get_curl($token);
     }
 
     public function check_payment($token){
