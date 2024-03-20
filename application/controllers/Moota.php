@@ -90,6 +90,8 @@ class Moota extends CI_Controller {
 
         foreach($banks['data'] as $key => $val){
             $bank_id = $val['bank_id'];
+
+            sleep(5);
             
             $mutations = $this->mutation_last($token,$bank_id);
             if(empty($mutations)){
