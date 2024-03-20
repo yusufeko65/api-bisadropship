@@ -92,6 +92,9 @@ class Moota extends CI_Controller {
             $bank_id = $val['bank_id'];
             
             $mutations = $this->mutation_last($token,$bank_id);
+            if(empty($mutations)){
+                continue;
+            }
             foreach($mutations as $ky => $vl){
                 $check = $this->pembayaran->check($vl);
                 if($check) break; 
