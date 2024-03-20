@@ -85,6 +85,7 @@ class Moota extends CI_Controller {
     }
 
     public function check_payment($token){
+        $this->load->model('pembayaran');
         $banks = $this->bank($token);
 
         foreach($banks['data'] as $key => $val){
