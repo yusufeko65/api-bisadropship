@@ -26,7 +26,7 @@ class Pembayaran extends CI_Model
             }
         }
 
-        return $totals;
+        return $status;
     }
 
     public function update_order($val,$notif){
@@ -42,7 +42,7 @@ class Pembayaran extends CI_Model
                 'order_pesan'       => $val['pesanan_no'],
                 'jml_bayar'         => $val['total'],
                 'bank_rek_tujuan'   => 0,
-                'bank_dari'         => $notif['bank_type'],
+                'bank_dari'         => isset($notif['bank_type']) ? $notif['bank_type'] : '',
                 'bank_rek_dari'     => $notif['account_number'],
                 'bank_atasnama_dari'=> '-',
                 'tgl_transfer'      => $notif['date'],
