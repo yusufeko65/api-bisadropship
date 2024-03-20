@@ -11,6 +11,8 @@ class Moota extends CI_Controller {
 
     public $parameter = '';
 
+    public $token = 'c3VzYW50MCNiNHNtYWxsYWhAMjgwMzE5OTU=';
+
     public function __construct(){
         parent::__construct();
 
@@ -23,7 +25,11 @@ class Moota extends CI_Controller {
 		// silent is Gold
 	}
 
-    public function get_curl(){
+    public function get_curl($token){
+        if($token != $this->token){
+            return false;
+        }
+
         $url = $this->url . $this->parameter;
         $header = [
             'Accept'            => $this->accept,
@@ -38,44 +44,58 @@ class Moota extends CI_Controller {
         return $result;
     }
 
-    public function profile(){
+    public function profile($token){
         $this->parameter = 'profile';
-        $this->get_curl();
+        $this->get_curl($token);
     }
 
-    public function balance(){
+    public function balance($token){
         $this->parameter = 'balance';
-        $this->get_curl();
+        $this->get_curl($token);
     }
 
-    public function bank(){
+    public function bank($token){
         $this->parameter = 'bank';
-        $this->get_curl();
+        $this->get_curl($token);
     }
 
-    public function bank_detail($id=0){
+    public function bank_detail($token,$id=0){
         $this->parameter = 'bank/' . $id;
-        $this->get_curl();
+        $this->get_curl($token);
     }
 
-    public function mutation($id=0){
+    public function mutation($token,$id=0){
         $this->parameter = 'bank/' . $id . '/mutation';
-        $this->get_curl();
+        $this->get_curl($token);
     }
 
-    public function mutation_last($id=0,$data=10){
+    public function mutation_last($token,$id=0,$data=10){
         $this->parameter = 'bank/' . $id . '/mutation/recent/' . $data;
-        $this->get_curl();
+        $this->get_curl($token);
     }
 
-    public function mutation_search_amount($id=0,$amount=10){
+    public function mutation_search_amount($token,$id=0,$amount=10){
         $this->parameter = 'bank/' . $id . '/mutation/search/' . $amount;
-        $this->get_curl();
+        $this->get_curl($token);
     }
 
-    public function mutation_search_description($id=0,$description=10){
+    public function mutation_search_description($token,$id=0,$description=10){
         $this->parameter = 'bank/' . $id . '/mutation/search/description/' . $description;
-        $this->get_curl();
+        $this->get_curl($token);
+    }
+
+    public function check_payment($token){
+        $banks = $this->bank($token);
+
+        foreach($banks as $key => $val){
+            $bank_id = $val['bank_id'];
+            
+            $mutations = $this->mutation_last($token,$bank_id);
+            foreach($mutations as $ky => $vl){
+                $check = $this->pembayaran->check($vl);
+                if($check) break; 
+            }
+        }
     }
 
     public function webhook_notif(){

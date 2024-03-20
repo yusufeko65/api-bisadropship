@@ -14,6 +14,13 @@ class Pembayaran extends CI_Model
         return $query->result_array();
     }
 
+    public function get_bank_by_rek($norek){
+        $sql = "SELECT bank_id FROM _bank_rekening WHERE rekening_no='$norek'";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function check($value){
         $status = false;
 
@@ -37,13 +44,18 @@ class Pembayaran extends CI_Model
                 'status_id' => 10
             ]);
 
+            // Get Bank tujuan
+            $no_rek = $notif['account_number'];
+            $id_bank = $this->get_bank_by_rek($no_rek);
+            $id_bank = isset($id_bank[0]) ? $id_bank[0]['bank_id'] : 0;
+
             // Insert Konfirmasi bayar
             $this->db->insert('_order_konfirmasi_bayar',[
                 'order_pesan'       => $val['pesanan_no'],
                 'jml_bayar'         => $val['total'],
-                'bank_rek_tujuan'   => 0,
-                'bank_dari'         => isset($notif['bank_type']) ? $notif['bank_type'] : '',
-                'bank_rek_dari'     => $notif['account_number'],
+                'bank_rek_tujuan'   => $id_bank,
+                'bank_dari'         => 0,
+                'bank_rek_dari'     => 0,
                 'bank_atasnama_dari'=> '-',
                 'tgl_transfer'      => $notif['date'],
                 'status_bayar'      => 12,
