@@ -8,7 +8,7 @@ class Pembayaran extends CI_Model
     }
 
     public function get_total(){
-        $sql = "SELECT pesanan_no, status_id, (pesanan_subtotal+pesanan_kurir-dari_poin-kode_unik) as total FROM _order WHERE status_id IN (9,17)";
+        $sql = "SELECT pesanan_no, status_id, (pesanan_subtotal+pesanan_kurir-dari_poin-kode_unik+biaya_packing) as total FROM _order WHERE status_id IN (9,17)";
 
         $query = $this->db->query($sql);
         return $query->result_array();
