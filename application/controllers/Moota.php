@@ -116,7 +116,7 @@ class Moota extends CI_Controller {
             foreach($totals as $ky => $vl){
                 $amount = $vl['total'];
 
-                sleep(3);
+                sleep(4);
 
                 $mutations = $this->mutation_search_amount($token,$bank_id,$amount);
                 if(isset($mutations['mutation'])){
@@ -124,12 +124,12 @@ class Moota extends CI_Controller {
                         $this->pembayaran->update_order($vl,$mutations['mutation'][0]);
                     }
                 }else{
-                    echo '------- ' . date('Y-m-d H:i:s');
-                    echo 'Bank ID : ' . $val['bank_type'];
-                    echo 'Amount  : ' . $amount;
-                    echo 'msg     : Lost Conection';
-                    echo '-------------------------';
-                    echo '';
+                    echo '------- ' . date('Y-m-d H:i:s') . '<br>';
+                    echo 'Bank ID : ' . $val['bank_type'] . '<br>';
+                    echo 'Amount  : ' . $amount . '<br>';
+                    echo 'msg     : Lost Conection' . '<br>';
+                    echo '-------------------------' . '<br>';
+                    echo '' . '<br>';
                 }
             }
         }
