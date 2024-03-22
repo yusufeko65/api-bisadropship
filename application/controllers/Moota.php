@@ -15,6 +15,7 @@ class Moota extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
+        date_default_timezone_set('Asia/Jakarta');
 
         $this->secret = SECRET_KEY_MOOTA;
         $this->load->library('curl');
@@ -115,13 +116,20 @@ class Moota extends CI_Controller {
             foreach($totals as $ky => $vl){
                 $amount = $vl['total'];
 
-                sleep(2);
+                sleep(3);
 
                 $mutations = $this->mutation_search_amount($token,$bank_id,$amount);
                 if(isset($mutations['mutation'])){
                     if(isset($mutations['mutation'][0])){
                         $this->pembayaran->update_order($vl,$mutations['mutation'][0]);
                     }
+                }else{
+                    echo '------- ' . date('Y-m-d H:i:s');
+                    echo 'Bank ID : ' . $val['bank_type'];
+                    echo 'Amount  : ' . $amount;
+                    echo 'msg     : Lost Conection';
+                    echo '-------------------------';
+                    echo '';
                 }
             }
         }
