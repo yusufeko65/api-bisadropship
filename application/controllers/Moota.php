@@ -119,7 +119,7 @@ class Moota extends CI_Controller {
 
                 $mutations = $this->mutation_search_amount($token,$bank_id,$amount);
                 if(isset($mutations['mutation'])){
-                    if($mutations['mutation'][0]){
+                    if(isset($mutations['mutation'][0])){
                         $this->update_order($vl,$mutations['mutation'][0]);
                         continue;
                     }
