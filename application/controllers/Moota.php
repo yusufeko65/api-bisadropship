@@ -122,12 +122,19 @@ class Moota extends CI_Controller {
                 if(isset($mutations['mutation'])){
                     if(isset($mutations['mutation'][0])){
                         $this->pembayaran->update_order($vl,$mutations['mutation'][0]);
+                    }else{
+                        echo '------- ' . date('Y-m-d H:i:s') . '\r\n';
+                        echo 'Bank ID : ' . $val['bank_type'] . '\r\n';
+                        echo 'Amount  : ' . $amount . '\r\n';
+                        echo 'msg     : Mutation : Not Found' . '\r\n';
+                        echo '-------------------------' . '\r\n';
+                        echo '' . '\r\n';
                     }
                 }else{
                     echo '------- ' . date('Y-m-d H:i:s') . '\r\n';
                     echo 'Bank ID : ' . $val['bank_type'] . '\r\n';
                     echo 'Amount  : ' . $amount . '\r\n';
-                    echo 'msg     : Lost Conection' . '\r\n';
+                    echo 'msg     : Lost Connection' . '\r\n';
                     echo '-------------------------' . '\r\n';
                     echo '' . '\r\n';
                 }
