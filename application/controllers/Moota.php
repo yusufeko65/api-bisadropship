@@ -115,13 +115,14 @@ class Moota extends CI_Controller {
             foreach($totals as $ky => $vl){
                 $amount = $vl['total'];
 
-                sleep(10);
+                sleep(2);
 
                 $mutations = $this->mutation_search_amount($token,$bank_id,$amount);
-                $check = array_filter($mutations['mutation']);
-                if(!empty($check)){
-                    $this->update_order($vl,$mutations['mutation']);
-                    continue;
+                if(isset($mutations['mutation'])){
+                    if($mutations['mutation']['bank_id']){
+                        $this->update_order($vl,$mutations['mutation']);
+                        continue;
+                    }
                 }
             }
         }
