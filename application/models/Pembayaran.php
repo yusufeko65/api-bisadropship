@@ -4,6 +4,8 @@ class Pembayaran extends CI_Model
 {
     public function __construct(){
         parent::__construct();
+        
+        date_default_timezone_set('Asia/Jakarta');
         $this->load->database();
     }
 
@@ -67,7 +69,7 @@ class Pembayaran extends CI_Model
             // Insert History Order Status
             $this->db->insert('_order_status',[
                 'nopesanan'     => $val['pesanan_no'],
-                'tanggal'       => date('Y-m-d H:i:s'),
+                'tanggal'       => $notif['created_at'],
                 'status_id'     => 10
             ]);
         }
