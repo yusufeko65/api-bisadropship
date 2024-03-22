@@ -121,7 +121,6 @@ class Moota extends CI_Controller {
                 if(isset($mutations['mutation'])){
                     if(isset($mutations['mutation'][0])){
                         $this->pembayaran->update_order($vl,$mutations['mutation'][0]);
-                        continue;
                     }
                 }
             }
