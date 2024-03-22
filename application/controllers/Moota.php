@@ -115,7 +115,7 @@ class Moota extends CI_Controller {
             foreach($totals as $ky => $vl){
                 $amount = $vl['total'];
 
-                sleep(5);
+                sleep(10);
 
                 $mutations = $this->mutation_search_amount($token,$bank_id,$amount);
                 $check = array_filter($mutations['mutation']);
