@@ -42,13 +42,15 @@ class Pembayaran extends CI_Model
             }else{
                 // check masa booking
                 $masa = $this->check_masaBooking() ;
+                $masa = isset($masa[0]) ? (int) $masa[0]['setting_value'] : 24;
+
                 $now = date('Y-m-d H:i:s');
                 $pesan = $v['pesanan_tgl'];
 
                 $snow = strtotime($now);
                 $spesan = strtotime($pesan);
                 $selisih = ceil( ($snow - $spesan) / (60 * 60));
-                if($selisih > (int) $masa){
+                if($selisih > $masa){
                     $this->update_order_cancel($v['pesanan_no']);
                 }
             }
