@@ -85,26 +85,6 @@ class Moota extends CI_Controller {
         return $this->get_curl($token);
     }
 
-    // public function check_payment($token){
-    //     $this->load->model('pembayaran');
-    //     $banks = $this->bank($token);
-
-    //     foreach($banks['data'] as $key => $val){
-    //         $bank_id = $val['bank_id'];
-
-    //         sleep(5);
-            
-    //         $mutations = $this->mutation_last($token,$bank_id);
-    //         if(empty($mutations)){
-    //             continue;
-    //         }
-    //         foreach($mutations as $ky => $vl){
-    //             $check = $this->pembayaran->check($vl);
-    //             if($check) break; 
-    //         }
-    //     }
-    // }
-
     public function check_payment($token){
         $this->load->model('pembayaran');
         $banks = $this->bank($token);
@@ -112,37 +92,64 @@ class Moota extends CI_Controller {
         foreach($banks['data'] as $key => $val){
             $bank_id = $val['bank_id'];
 
-            $totals = $this->pembayaran->get_total();
-            foreach($totals as $ky => $vl){
-                $amount = $vl['total'];
-
-                sleep(5);
-
-                $mutations = $this->mutation_search_amount($token,$bank_id,$amount);
-                if(isset($mutations['mutation'])){
-                    if(isset($mutations['mutation'][0])){
-                        $this->pembayaran->update_order($vl,$mutations['mutation'][0]);
-                    }else{
-                        echo '
-                            ------- ' . date('Y-m-d H:i:s') . '
-                            Bank ID : ' . $val['bank_type'] . '
-                            Amount  : ' . $amount . '
-                            msg     : Mutation : Not Found' . '
-                            -------------------------
-                        ';
-                    }
-                }else{
-                    echo '
+            sleep(7);
+            
+            $mutations = $this->mutation_last($token,$bank_id,15);
+            if(empty($mutations)){
+                echo '
                         ------- ' . date('Y-m-d H:i:s') . '
                         Bank ID : ' . $val['bank_type'] . '
-                        Amount  : ' . $amount . '
+                        Amount  : 0
                         msg     : Lost Connection' . '
                         -------------------------
                     ';
-                }
+                continue;
+            }
+            foreach($mutations as $ky => $vl){
+                $check = $this->pembayaran->check($vl);
+                if($check) break; 
             }
         }
     }
+
+    // public function check_payment($token){
+    //     $this->load->model('pembayaran');
+    //     $banks = $this->bank($token);
+
+    //     foreach($banks['data'] as $key => $val){
+    //         $bank_id = $val['bank_id'];
+
+    //         $totals = $this->pembayaran->get_total();
+    //         foreach($totals as $ky => $vl){
+    //             $amount = $vl['total'];
+
+    //             sleep(5);
+
+    //             $mutations = $this->mutation_search_amount($token,$bank_id,$amount);
+    //             if(isset($mutations['mutation'])){
+    //                 if(isset($mutations['mutation'][0])){
+    //                     $this->pembayaran->update_order($vl,$mutations['mutation'][0]);
+    //                 }else{
+    //                     echo '
+    //                         ------- ' . date('Y-m-d H:i:s') . '
+    //                         Bank ID : ' . $val['bank_type'] . '
+    //                         Amount  : ' . $amount . '
+    //                         msg     : Mutation : Not Found' . '
+    //                         -------------------------
+    //                     ';
+    //                 }
+    //             }else{
+    //                 echo '
+    //                     ------- ' . date('Y-m-d H:i:s') . '
+    //                     Bank ID : ' . $val['bank_type'] . '
+    //                     Amount  : ' . $amount . '
+    //                     msg     : Lost Connection' . '
+    //                     -------------------------
+    //                 ';
+    //             }
+    //         }
+    //     }
+    // }
 
     public function webhook_notif(){
         header("Content-Type:application/json");

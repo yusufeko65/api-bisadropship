@@ -9,8 +9,15 @@ class Pembayaran extends CI_Model
         $this->load->database();
     }
 
+    public function check_masaBooking(){
+        $sql = "SELECT setting_value FROM _setting WHERE setting_group='config' AND setting_key='config_masabayar'";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function get_total(){
-        $sql = "SELECT pesanan_no, status_id, (pesanan_subtotal+pesanan_kurir-dari_poin-kode_unik+biaya_packing) as total FROM _order WHERE kode_unik > 0 AND status_id IN (9)";
+        $sql = "SELECT pesanan_no, pesanan_tgl ,status_id, (pesanan_subtotal+pesanan_kurir-dari_poin-kode_unik+biaya_packing) as total FROM _order WHERE kode_unik > 0 AND status_id IN (9)";
 
         $query = $this->db->query($sql);
         return $query->result_array();
@@ -32,6 +39,18 @@ class Pembayaran extends CI_Model
                 $this->update_order($v,$value);
                 $status = true;
                 break;
+            }else{
+                // check masa booking
+                $masa = $this->check_masaBooking() ;
+                $now = date('Y-m-d H:i:s');
+                $pesan = $v['pesanan_tgl'];
+
+                $snow = strtotime($now);
+                $spesan = strtotime($pesan);
+                $selisih = ceil( ($snow - $spesan) / (60 * 60));
+                if($selisih > (int) $masa){
+                    $this->update_order_cancel($v['pesanan_no']);
+                }
             }
         }
 
@@ -70,10 +89,27 @@ class Pembayaran extends CI_Model
             $this->db->insert('_order_status',[
                 'nopesanan'     => $val['pesanan_no'],
                 'tanggal'       => $notif['created_at'],
+                'keterangan'    => $notif['description'],
                 'status_id'     => 10
             ]);
         }
 
         return true;
+    }
+
+    public function update_order_cancel($no_order=0){
+        // Update status
+        $this->db->where('pesanan_no',$no_order);
+        $this->db->update('_order',[
+            'status_id' => 10
+        ]);
+
+        // Insert History Order Status
+        $this->db->insert('_order_status',[
+            'nopesanan'     => $no_order,
+            'tanggal'       => date('Y-m-d H:i:s'),
+            'keterangan'    => 'Batal otomatis',
+            'status_id'     => 14
+        ]);
     }
 }
