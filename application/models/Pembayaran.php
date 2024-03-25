@@ -103,7 +103,7 @@ class Pembayaran extends CI_Model
         // Update status
         $this->db->where('pesanan_no',$no_order);
         $this->db->update('_order',[
-            'status_id' => 10
+            'status_id' => 14
         ]);
 
         // Insert History Order Status

@@ -89,6 +89,18 @@ class Moota extends CI_Controller {
         $this->load->model('pembayaran');
         $banks = $this->bank($token);
 
+        if(empty($mutations)){
+            echo '
+                ------- ' . date('Y-m-d H:i:s') . '
+                Bank ID : -
+                Amount  : 0
+                msg     : Lost Connection' . '
+                -------------------------
+            ';
+            
+            return false;
+        }
+
         foreach($banks['data'] as $key => $val){
             $bank_id = $val['bank_id'];
 
