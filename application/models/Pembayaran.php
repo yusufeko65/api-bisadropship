@@ -10,7 +10,7 @@ class Pembayaran extends CI_Model
     }
 
     public function check_masaBooking(){
-        $sql = "SELECT setting_value FROM _setting WHERE setting_group='config' AND setting_key='config_masabayar'";
+        $sql = "SELECT setting_value FROM _setting WHERE setting_grup='config' AND setting_key='config_masabayar'";
 
         $query = $this->db->query($sql);
         return $query->result_array();
