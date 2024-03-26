@@ -89,7 +89,7 @@ class Moota extends CI_Controller {
         $this->load->model('pembayaran');
         $banks = $this->bank($token);
 
-        if(empty($mutations)){
+        if(empty($banks)){
             echo '
                 ------- ' . date('Y-m-d H:i:s') . '
                 Bank ID : -
