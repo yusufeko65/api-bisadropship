@@ -85,6 +85,11 @@ class Moota extends CI_Controller {
         return $this->get_curl($token);
     }
 
+	public function update_stok_cancel(){
+		$this->load->model('pembayaran');
+		$this->pembayaran->update_stok_cancel();
+	}
+
     public function check_payment($token){
         $this->load->model('pembayaran');
         $banks = $this->bank($token);
