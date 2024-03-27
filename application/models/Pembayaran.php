@@ -114,4 +114,72 @@ class Pembayaran extends CI_Model
             'status_id'     => 14
         ]);
     }
+	public function get_status_cancel(){
+		$sql = "SELECT `idostatus`,`nopesanan` FROM `_order_status` WHERE `status_id`=14 AND `keterangan`='Batal Otomatis'";
+	
+		$query = $this->db->query($sql);
+	    return $query->result_array();
+	}
+		
+	public function get_order_cancel(){
+		$cancels = [];
+		$status = $this->get_status_cancel();
+		foreach($status as $key => $val){
+			$ids = $val['idostatus'];
+			$cancels[] = $val['nopesanan'];
+
+			// Update
+			$this->db->where('idostatus',$ids);
+            $this->db->update('_order_status',[
+                'keterangan' => '#Batal Otomatis'
+            ]);
+		}
+		
+		$cancel = implode(',',$cancels);
+        $sql = "SELECT * FROM `_order_detail` WHERE `pesanan_no` IN ($cancel)";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+	public function update_stok_cancel(){
+		$cancel = $this->get_order_cancel();
+		foreach($cancel as $key => $val){
+			$qty = $val['jml'];
+			$idproduk = $val['produk_id'];
+			$idukuran = $val['ukuranid'];
+			$idwarna = $val['warnaid'];
+
+			// Get Produk
+			$sql = "SELECT idopt,stok FROM `_produk_options` WHERE `idproduk`='$idproduk' AND ukuran='$idukuran' AND warna='$idwarna'";
+
+	        $query = $this->db->query($sql);
+	        $produk = $query->result_array();
+
+			if(isset($produk[0])){
+				$idopt = $produk[0]['idopt'];
+				$stok = $produk[0]['stok'] + $qty;
+
+				// Update Stock
+				$this->db->where('idopt',$idopt);
+	            $this->db->update('_produk_options',[
+	                'stok' => $stok
+	            ]);
+
+				// Update Stock Produk
+				$sqls = "SELECT jml_stok FROM `_produk` WHERE `idproduk`='$idproduk'";
+
+		        $querys = $this->db->query($sqls);
+		        $prd = $querys->result_array();
+
+				$jstok = $prd[0]['jml_stok'] + $qty;
+				
+				$this->db->where('idproduk',$idproduk);
+	            $this->db->update('_produk',[
+	                'jml_stok' => $jstok
+	            ]);
+			}
+			
+		}
+    }
 }
