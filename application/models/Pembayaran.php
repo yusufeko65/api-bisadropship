@@ -51,7 +51,7 @@ class Pembayaran extends CI_Model
                 $spesan = strtotime($pesan);
                 $selisih = ceil( ($snow - $spesan) / (60 * 60));
                 if($selisih > $masa){
-                    $this->update_order_cancel($v['pesanan_no']);
+                   // $this->update_order_cancel($v['pesanan_no']);
                 }
             }
         }
